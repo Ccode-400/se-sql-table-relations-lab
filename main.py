@@ -59,7 +59,15 @@ ORDER BY CAST(p.amount AS REAL) DESC
 
 # STEP 6
 # Replace None with your code
-df_credit = None
+df_credit = pd.read_sql("""
+SELECT e.employeeNumber, e.firstName, e.lastName, COUNT(DISTINCT c.customerNumber) as numCustomers
+FROM employees e
+JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
+GROUP BY e.employeeNumber
+HAVING AVG(c.creditLimit) > 90000
+ORDER BY numCustomers DESC
+LIMIT 4
+""", conn)
 
 # STEP 7
 # Replace None with your code
