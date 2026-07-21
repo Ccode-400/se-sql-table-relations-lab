@@ -94,7 +94,14 @@ ORDER BY numpurchasers DESC
 
 # STEP 9
 # Replace None with your code
-df_customers = None
+df_customers = pd.read_sql("""
+SELECT COUNT(DISTINCT c.customerNumber) as n_customers, 
+       o.officeCode, o.city
+FROM offices o
+LEFT JOIN employees e ON o.officeCode = e.officeCode
+LEFT JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
+GROUP BY o.officeCode, o.city
+""", conn)
 
 # STEP 10
 # Replace None with your code
